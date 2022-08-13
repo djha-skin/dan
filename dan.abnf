@@ -1,0 +1,111 @@
+dan-doc = *comment dan-value *comment
+
+dan-value   = bool
+            / number
+            / string
+            / symbol
+            / list
+
+; Boolean
+true = %x23.74                          ; "#t"
+false = %x23.66                         ; "#f"
+bool = true
+     / false
+
+; Number
+zero = %x30                             ; 0
+digits1to9 = %31-%39                    ; 1-9
+digits = %x30-%x39                      ; 0-9
+exp = %45 / %65                         ; E or e
+dot = %2E                               ; .
+sign = %x2B                             ; +
+     / %x2D                             ; -
+integer = *1sign (zero / (digits1to9 *digits))
+number = integer ((dot *digits *(exp integer)) / exp integer)
+
+; String
+hexa = %x41 / %61
+hexb = %x42 / %62
+hexb = %x43 / %63
+hexc = %x44 / %64
+hexd = %x45 / %65
+hexe = %x46 / %66
+hexf = %x47 / %67
+hexdig = %x30-%x39 / hexa / hexb / hexc / hexd / hexe / hexf
+
+quot = %x22                             ; "
+esc  = %x5C ; \
+escapable = %x5C ; backslash
+          / %x61 ; a -> alarm, 07
+          / %x62 ; b -> backspace, 08
+          / %x74 ; t -> 09
+          / %x6E ; n -> 0A
+          / %x72 ; r -> 0D
+          / %x22 ; "
+          / %x7C ; |
+          / (*blankspace line-delimiter)
+          / (%x78 1*hexdig %3B) ; \xXXXX;
+
+notesc = %x20-5B / %x5D-%x10FFFF
+
+quoted = quot *(notesc / esc escapable) quot
+
+prosemark =    %x23.3F ; #?
+verbatimmark = %x23.21 ; #!
+prose = prosemark *blankspace next-line
+             1*(*blankspace prosemark printable next-line)
+verbatim = verbatimmark *blankspace next-line
+             1*(*blankspace verbatimmark printable next-line)
+string = quoted
+       / prose
+       / verbatim
+
+dot = %x2E
+identspecial = %x21 ; !
+             / %x24 ; $
+             / %x25 ; %
+             / %x26 ; &
+             / %x2A ; *
+             / %x2f ; /
+             / %x3A ; :
+             / %x3C ; <
+             / %x3D ; =
+             / %x3E ; >
+             / %x3F ; ?
+             / %x40 ; @
+             / %x5E ; ^
+             / %x5F ; _
+             / %x7E ; ~
+
+capalpha = %x41-5A ; A-Z
+lowalpha = %x61-7A ; a-z
+nonascii = %x80-10FFF ; yee-haw
+allident = capalpha
+         / lowalpha
+         / identspecial
+         / digits
+         / sign
+         / dot
+identifier = ((capalpha / lowalpha / identspecial) *allident)
+           / ((sign / dot) (capalpha / lowalpha / identspecial) *allident)
+
+squot = %x7C                             ; |
+squoted = squot *(notesc / esc escapable) squot
+symbol = identifier
+       / squoted
+
+; list
+list-sep   = 1*whitespace
+list-start = %x28 ; (
+list-end = %x29 ; )
+list = list-start *1list-sep *( dan-value
+                                *(list-sep dan-value) ) *1list-sep list-end
+
+;; base language
+blankspace = %x09 / %x32
+line-delimiter = %0A        ; \n
+printable = %x09 / %20-%10FF ; all printable characters
+comment-start = %x3B ; a semi-colon
+comment = *blankspace comment-start *printable line-delimiter
+next-line = line-delimiter *comment
+whitespace = blankspace / next-line   ;  \n+comments
