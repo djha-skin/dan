@@ -20,8 +20,8 @@ exp = %45 / %65                         ; E or e
 dot = %2E                               ; .
 sign = %x2B                             ; +
      / %x2D                             ; -
-integer = *1sign (zero / (digits1to9 *digits))
-number = integer ((dot *digits *(exp integer)) / exp integer)
+integer = *1sign (zero / digits1to9 *digits)
+number = integer [ dot *digits [exp integer] / exp integer ]
 
 ; String
 hexa = %x41 / %x61
@@ -43,8 +43,8 @@ escapable = %x5C ; backslash
           / %x72 ; r -> 0D
           / %x22 ; "
           / %x7C ; |
-          / (*blankspace line-delimiter)
-          / (%x78 1*hexdig %3B) ; \xXXXX;
+          / *blankspace line-delimiter
+          / %x78 1*hexdig %3B ; \xXXXX;
 
 notesc = %x20-5B / %x5D-10FFFF
 
@@ -85,8 +85,8 @@ allident = capalpha
          / digits
          / sign
          / dot
-identifier = ((capalpha / lowalpha / identspecial) *allident)
-           / ((sign / dot) (capalpha / lowalpha / identspecial) *allident)
+identifier = (capalpha / lowalpha / identspecial) *allident
+           / (sign / dot) (sign / dot / capalpha / lowalpha / identspecial) *allident
 
 squot = %x7C                             ; |
 squoted = squot *(notesc / esc escapable) squot
