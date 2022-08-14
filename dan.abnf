@@ -15,7 +15,7 @@ bool = true
 ; Number
 zero = %x30                             ; 0
 digits1to9 = %31-%39                    ; 1-9
-digits = %x30-%x39                      ; 0-9
+digits = %x30-39                        ; 0-9
 exp = %45 / %65                         ; E or e
 dot = %2E                               ; .
 sign = %x2B                             ; +
