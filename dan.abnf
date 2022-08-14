@@ -24,13 +24,13 @@ integer = *1sign (zero / (digits1to9 *digits))
 number = integer ((dot *digits *(exp integer)) / exp integer)
 
 ; String
-hexa = %x41 / %61
-hexb = %x42 / %62
-hexb = %x43 / %63
-hexc = %x44 / %64
-hexd = %x45 / %65
-hexe = %x46 / %66
-hexf = %x47 / %67
+hexa = %x41 / %x61
+hexb = %x42 / %x62
+hexb = %x43 / %x63
+hexc = %x44 / %x64
+hexd = %x45 / %x65
+hexe = %x46 / %x66
+hexf = %x47 / %x67
 hexdig = %x30-%x39 / hexa / hexb / hexc / hexd / hexe / hexf
 
 quot = %x22                             ; "
@@ -63,23 +63,22 @@ string = quoted
 dot = %x2E
 identspecial = %x21 ; !
              / %x24 ; $
-             / %x25 ; %
+             / %x25  ; %
              / %x26 ; &
              / %x2A ; *
              / %x2f ; /
-             / %x3A ; :
+             / %x3A  ; :
              / %x3C ; <
              / %x3D ; =
-             / %x3E ; >
-             / %x3F ; ?
-             / %x40 ; @
-             / %x5E ; ^
-             / %x5F ; _
-             / %x7E ; ~
+             / %x3E  ; >
+             / %x3F  ; ?
+             / %x40  ; @
+             / %x5E  ; ^
+             / %x5F  ; _
+             / %x7E  ; ~
 
-capalpha = %x41-5A ; A-Z
-lowalpha = %x61-7A ; a-z
-nonascii = %x80-10FFF ; yee-haw
+capalpha = %x41-5A    ; A-Z
+lowalpha = %x61-7A    ; a-z
 allident = capalpha
          / lowalpha
          / identspecial
