@@ -103,7 +103,7 @@ list = list-start *1list-sep *( dan-value
 ;; base language
 blankspace = %x09 / %x32
 line-delimiter = %0A         ; \n
-printable = %x09 / %20-%10FF ; all printable characters
+printable = %x09 / %x20-10FF ; all printable characters
 comment-start = %x3B ; a semi-colon
 comment = *blankspace comment-start *printable line-delimiter
 next-line = line-delimiter *comment
