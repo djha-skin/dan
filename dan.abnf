@@ -31,7 +31,7 @@ hexc = %x44 / %x64
 hexd = %x45 / %x65
 hexe = %x46 / %x66
 hexf = %x47 / %x67
-hexdig = %x30-%x39 / hexa / hexb / hexc / hexd / hexe / hexf
+hexdig = %x30-39 / hexa / hexb / hexc / hexd / hexe / hexf
 
 quot = %x22                             ; "
 esc  = %x5C ; \
@@ -46,7 +46,7 @@ escapable = %x5C ; backslash
           / (*blankspace line-delimiter)
           / (%x78 1*hexdig %3B) ; \xXXXX;
 
-notesc = %x20-5B / %x5D-%x10FFFF
+notesc = %x20-5B / %x5D-10FFFF
 
 quoted = quot *(notesc / esc escapable) quot
 
@@ -61,21 +61,21 @@ string = quoted
        / verbatim
 
 dot = %x2E
-identspecial = %x21 ; !
-             / %x24 ; $
-             / %x25  ; %
-             / %x26 ; &
-             / %x2A ; *
-             / %x2f ; /
-             / %x3A  ; :
-             / %x3C ; <
-             / %x3D ; =
-             / %x3E  ; >
-             / %x3F  ; ?
-             / %x40  ; @
-             / %x5E  ; ^
-             / %x5F  ; _
-             / %x7E  ; ~
+identspecial = %x21   ; !
+             / %x24   ; $
+             / %x25   ; %
+             / %x26   ; &
+             / %x2A   ; *
+             / %x2f   ; /
+             / %x3A   ; :
+             / %x3C   ; <
+             / %x3D   ; =
+             / %x3E   ; >
+             / %x3F   ; ?
+             / %x40   ; @
+             / %x5E   ; ^
+             / %x5F   ; _
+             / %x7E   ; ~
 
 capalpha = %x41-5A    ; A-Z
 lowalpha = %x61-7A    ; a-z
@@ -102,7 +102,7 @@ list = list-start *1list-sep *( dan-value
 
 ;; base language
 blankspace = %x09 / %x32
-line-delimiter = %0A        ; \n
+line-delimiter = %0A         ; \n
 printable = %x09 / %20-%10FF ; all printable characters
 comment-start = %x3B ; a semi-colon
 comment = *blankspace comment-start *printable line-delimiter
