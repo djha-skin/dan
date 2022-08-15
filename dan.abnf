@@ -1,16 +1,22 @@
-dan-doc = *comment dan-value *comment
+dan-doc = *comment *dan-value *comment
 
-dan-value   = bool
+dan-value   = null
+            / bool
             / number
             / string
             / symbol
             / list
+            / plist
+
+; Null
+null = %23.30                           ; "#0"
 
 ; Boolean
-true = %x23.74                          ; "#t"
 false = %x23.66                         ; "#f"
-bool = true
-     / false
+true = %x23.74                          ; "#t"
+
+bool = false
+     / true
 
 ; Number
 zero = %x30                             ; 0
@@ -85,11 +91,16 @@ allident = capalpha
          / digits
          / sign
          / dot
+
 identifier = (capalpha / lowalpha / identspecial) *allident
-           / (sign / dot) (sign / dot / capalpha / lowalpha / identspecial) *allident
+           / sign [ (sign / dot / capalpha / lowalpha / identspecial) *allident ]
+           / dot ( sign / dot / capalpha / lowalpha / identspecial) *allident
 
 squot = %x7C                             ; |
-squoted = squot *(notesc / esc escapable) squot
+; Must have at least one char
+
+; There is no such thing as the empty symbol
+squoted = squot 1*(notesc / esc escapable) squot
 symbol = identifier
        / squoted
 
@@ -97,13 +108,19 @@ symbol = identifier
 list-sep   = 1*whitespace
 list-start = %x28 ; (
 list-end = %x29 ; )
-list = list-start *1list-sep *( dan-value
+list = list-start [ list-sep ] *( dan-value
                                 *(list-sep dan-value) ) *1list-sep list-end
+
+; plist
+plist-start = %x7B            ; {
+plist-end = %x7D              ; }
+plist-kv = dan-value list-sep dan-value
+plist = plist-start [ list-sep ] *( plist-kv *( list-sep plist-kv ) ) [ list-sep ] plist-end
 
 ;; base language
 blankspace = %x09 / %x32
 line-delimiter = %0A         ; \n
-printable = %x09 / %x20-10FF ; all printable characters
+printable = %x09 / %x20-10FFFF ; all printable characters
 comment-start = %x3B ; a semi-colon
 comment = *blankspace comment-start *printable line-delimiter
 next-line = line-delimiter *comment
