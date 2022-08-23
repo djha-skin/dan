@@ -14,7 +14,7 @@ strings, null, and a small deviation for making more consistent representation
 of infinity and NaN values.
 
 It has null (`#n`),  booleans (`#t` for true and `#f` for false),
-normal JSON numbers, strings, scheme-like symbols, lists, and plists.
+(mostly) normal JSON numbers, strings, scheme-like symbols, and lists.
 
 ## Design Goals
 
