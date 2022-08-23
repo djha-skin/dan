@@ -29,7 +29,7 @@ Null, nil or nothing is written `#n`.
 
 ### Boolean
 
-These are written `#t` and `#f` for false.
+These are written `#t` for true and `#f` for false.
 
 ### Number
 
