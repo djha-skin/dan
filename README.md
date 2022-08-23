@@ -1,6 +1,6 @@
 # Data Austerity Notation
 
-A data notation with the bare essentials.
+A data notation with the bare essentials. ABNF in the repo in the file [dan.abnf](./dan.abnf).
 
 ## Design Goals
 
