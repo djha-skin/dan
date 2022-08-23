@@ -191,7 +191,7 @@ Lists begin with a `(` character and end with a `)` character.
     jurisdiction state
     same-state-parks (
         "Arches"
-        ;; Very Nice and underrated.
+        ; Very Nice and underrated.
         "Coral Pink Sand Dunes"
         "Grand Canyon"
     )
@@ -201,6 +201,7 @@ Lists begin with a `(` character and end with a `)` character.
     #]| *   * |
     #]|   U   |
     #]| =   = |
+    ; ^^ He needs a shave
     #]|  ---  |
     #]\-------/
 
@@ -209,6 +210,12 @@ Lists begin with a `(` character and end with a `)` character.
     #> why
 )
 ```
+
+Notes about the above example:
+  - I can use symbols as either keys or values in the above plist
+  - I don't have to escape the backslash in the `ascii-face` prefixed verbatim multi-line string
+  - I can put comments just about anywhere, as long as they are on their own line.
+  - Clean syntax
 
 ## What is a plist?
 
@@ -327,5 +334,3 @@ before hand and declare it. This is safer anyway. The right API will
 make this easy, regardless of the language. The upside is that since
 everything has order, typed languages have a much easier time since
 incremental parsing is possible.
-
-
