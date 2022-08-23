@@ -58,10 +58,9 @@ prosemark =    %x23.3E ; #>
 
 verbatimmark = %x23.5D ; #]
 
-prose = prosemark *blankspace next-line
-             1*(*blankspace prosemark printable next-line)
-verbatim = verbatimmark *blankspace next-line
-             1*(*blankspace verbatimmark printable next-line)
+prose = 1*(prosemark *printable next-line *blankspace)
+verbatim = 1*(verbatimmark *printable next-line *blankspace)
+
 string = quoted
        / prose
        / verbatim

@@ -108,7 +108,7 @@ Scheme r7rs-small strings:
 Verbatim strings start with a verbatim mark, `#]`. Then blankspace and a line
 delimiter follow. Ignoring comment lines, subsequent verbatim marks have
 the contents of the line after the mark appended to the multi-line string,
-including the line delimiter. The first and last line delimiters are not
+including the line delimiter. The last line delimiter is not
 included in the final product.
 
 Thus:
@@ -138,7 +138,7 @@ This:
     #]34
 ```
 
-Represents the string `"12\n34"`.
+Represents the string `"\n12\n34"`.
 
 #### Prose strings
 
@@ -157,7 +157,6 @@ Still represents the empty string.
 This:
 
 ```
-    #>
     #>    As I walked
     #>    slowly by
     #>
@@ -219,6 +218,18 @@ Lists begin with a `(` character and end with a `)` character.
         "Coral Pink Sand Dunes"
         "Grand Canyon"
     )
+
+    ascii-face
+    #].-------.
+    #]| *   * |
+    #]|   U   |
+    #]| =   = |
+    #]|  ---  |
+    #]\-------/
+
+    quote
+    #>but
+    #> why
 )
 ```
 
@@ -330,3 +341,4 @@ keywords which scheme does not have. The good news is, all valid keywords and
 symbols in Clojure and Common Lisp are also scheme symbols. This was chosen
 on purpose. Now all lisps are well supported, as well as any other language
 using keywords. Just use a colon in the symbol name as normal.
+
