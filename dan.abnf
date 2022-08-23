@@ -1,4 +1,4 @@
-dan-doc = *comment *dan-value *comment
+dan-doc = *comment dan-value *comment
 
 dan-value   = null
             / bool
@@ -6,10 +6,9 @@ dan-value   = null
             / string
             / symbol
             / list
-            / plist
 
 ; Null
-null = %23.30                           ; "#0"
+null = %23.6E                           ; "#n"
 
 ; Boolean
 false = %x23.66                         ; "#f"
@@ -18,16 +17,15 @@ true = %x23.74                          ; "#t"
 bool = false
      / true
 
-; Number
-zero = %x30                             ; 0
 digits1to9 = %31-%39                    ; 1-9
 digits = %x30-39                        ; 0-9
 exp = %45 / %65                         ; E or e
+top = %54 / %74                         ; T or t
 dot = %2E                               ; .
 sign = %x2B                             ; +
      / %x2D                             ; -
-integer = *1sign (zero / digits1to9 *digits)
-number = integer [ dot *digits [exp integer] / exp integer ]
+integer = [ sign ] (zero / digits1to9 *digits)
+number = integer [ dot *digits ] [ exp ( integer / top ) ]
 
 ; String
 hexa = %x41 / %x61
@@ -56,8 +54,10 @@ notesc = %x20-5B / %x5D-10FFFF
 
 quoted = quot *(notesc / esc escapable) quot
 
-prosemark =    %x23.3F ; #?
-verbatimmark = %x23.21 ; #!
+prosemark =    %x23.3E ; #>
+
+verbatimmark = %x23.5D ; #]
+
 prose = prosemark *blankspace next-line
              1*(*blankspace prosemark printable next-line)
 verbatim = verbatimmark *blankspace next-line
@@ -110,13 +110,6 @@ list-start = %x28 ; (
 list-end = %x29 ; )
 list = list-start [ list-sep ] *( dan-value
                                 *(list-sep dan-value) ) *1list-sep list-end
-
-; plist
-plist-start = %x7B            ; {
-plist-end = %x7D              ; }
-plist-kv = dan-value list-sep dan-value
-plist = plist-start [ list-sep ] *( plist-kv *( list-sep plist-kv ) ) [ list-sep ] plist-end
-
 ;; base language
 blankspace = %x09 / %x32
 line-delimiter = %0A         ; \n
