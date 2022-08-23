@@ -62,10 +62,10 @@ characters as stand-ins for the exponent:
 `[-+](0|[1-9][0-9]*)(.[0-9]+)?([eE]([0-9]+|[tT]))?`
 
 The `"t"` means `"top"` and means that all the exponent bits in the number
-are set to 1. This allows the language to represent infinity and IEEE 754
+are set to 1. This allows the language to represent IEEE 754
 infinity and NaN values. NaN has its exponent set to `t` and is non-zero,
-while infinity has all zeroes set for the integer and radix and the exponent
-set to T. Thus, the canonical way to write the following in DAN is:
+while infinities have all zeroes set for the integer and radix and the exponent
+set to `t`. Thus, the canonical way to write the following in DAN is:
 
 | Value             | Canonical Representation |
 |-------------------|--------------------------|
