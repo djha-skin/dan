@@ -1,40 +1,17 @@
 # Data Austerity Notation
 
-## Introduction
-
-I wanted to make a data language. I saw how all the greats did it: they took
-a programming language and removed features.
-
-But I wanted YAML-like multiline strings, except waaaay simpler.
-
-So I made a *DEAD SIMPLE* data language.
-
-It is mostly a subset of r7rs-small scheme, with additions for those multi-line
-strings, null, and a small deviation for making more consistent representation
-of infinity and NaN values.
-
-It has null (`#n`),  booleans (`#t` for true and `#f` for false),
-(mostly) normal JSON numbers, strings, scheme-like symbols, and lists.
+A data notation with the bare essentials.
 
 ## Design Goals
 
-- Support RPCs better (looking at your, JSON RPC)
-- Support Typed Languages better
+- Textual data format
+- Support API communication a la JSON
+- Support config files and document embedding a la YAML
+- Support symbols and keywords in lisps a la EDN
+- Support incremental parsing better
+- Support typed languages better
 - Support better schema checking. It doesn't support it better than JSON,
   but it does encourage it more.
-- Support prefixed multi-line strings, obviating need for YAML
-- Support symbols and keywords in lisps, obviating the need for EDN
-
-
-## How is this better?
-
-Since parsers have no way to distinguish between lists, sets, maps, or
-vectors -- everything is just a list -- the program must know the schema
-before hand and declare it. This is safer anyway. The right API will
-make this easy, regardless of the language. The upside is that since
-everything has order, typed languages have a much easier time since
-incremental parsing is possible.
-
 ## Syntax
 
 ## Comments
@@ -341,4 +318,14 @@ keywords which scheme does not have. The good news is, all valid keywords and
 symbols in Clojure and Common Lisp are also scheme symbols. This was chosen
 on purpose. Now all lisps are well supported, as well as any other language
 using keywords. Just use a colon in the symbol name as normal.
+
+## How is this better?
+
+Since parsers have no way to distinguish between lists, sets, maps, or
+vectors -- everything is just a list -- the program must know the schema
+before hand and declare it. This is safer anyway. The right API will
+make this easy, regardless of the language. The upside is that since
+everything has order, typed languages have a much easier time since
+incremental parsing is possible.
+
 
