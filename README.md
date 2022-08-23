@@ -12,6 +12,7 @@ A data notation with the bare essentials. ABNF in the repo in the file [dan.abnf
 - Support typed languages better
 - Support better schema checking. It doesn't support it better than JSON,
   but it does encourage it more.
+
 ## Syntax
 
 ## Comments
@@ -21,17 +22,15 @@ number of blankspace characters. The comment itself starts with a semi-colon
 (`;`) character and continues to the end of the line. The entire line
 is removed as if it never existed.
 
-## Language Types
-
-### Null
+## Null
 
 Null, nil or nothing is written `#n`.
 
-### Boolean
+## Boolean
 
 These are written `#t` for true and `#f` for false.
 
-### Number
+## Number
 
 These are written just as JSON numbers, with the addition of the `T` or `t`
 characters as stand-ins for the exponent:
@@ -56,9 +55,9 @@ The above representations of the values should be used when generating DAN.
 
 All "Not a Number" values are considered to be equivalent.
 
-### Strings
+## Strings
 
-#### Quoted strings
+### Quoted strings
 
 Quoted strings are quoted with double quotes (`"`).
 
@@ -80,7 +79,7 @@ Scheme r7rs-small strings:
     number of hexadecimal digits delimited by an ending semi-colon
     (may be checked to be within the range of `0-10FFFF` by the implementation)
 
-#### Verbatim Strings
+### Verbatim Strings
 
 Verbatim strings start with a verbatim mark, `#]`. Then blankspace and a line
 delimiter follow. Ignoring comment lines, subsequent verbatim marks have
@@ -117,7 +116,7 @@ This:
 
 Represents the string `"\n12\n34"`.
 
-#### Prose strings
+### Prose strings
 
 Prose strings are the same as verbatim strings, except that unbroken substrings
 of blankspace and whitespace characters that are are found between non-space
@@ -141,7 +140,7 @@ This:
 
 Represents the quoted string `"    As I walked slowly by  \n"`
 
-### Symbols
+## Symbols
 
 Symbols are named entities that are unique if their names are unique. They are
 named by the characters in their name. They are semantically something like
@@ -149,27 +148,26 @@ enum values with names attached to them.
 
 To quote the R7RS standard:
 
-> An identifier is any sequence of letters, digits, and “ex- tended identifier
-> characters” provided that it does not have a prefix which is a valid number.
-> However, the . token (a single period) used in the list syntax is not an
-> identifier. All implementations of Scheme must support the following extended
-> identifier characters:
->
-> ```
-> ! $ % & * + - . / : < = > ? @ ^ _ ~
+
+! $ % & * + - . / : < = > ? @ ^ _ ~
 > ```
 >
 > Alternatively, an
 > identifier can be represented by a se- quence of zero or more characters
 > enclosed within vertical lines (`|`), analogous to string literals.
 
-They can, as in the above quote, appear bear or quoted. If bear, the following
+They can appear bare or quoted. If bare, the following
 rules apply:
+
+- As in the r7rs-small standard, symbols can have alphabetic ASCII characters, digits, or one of the following characters in it:
+  `! $ % & * + - . / : < = > ? @ ^ _ ~`
 
 - They can't start with a numerical character. They must start with
   one of the alphabetic ASCII characters or one of the symbols above.
+
 - If they start with a period, a plus, or a minus, the second character
   can't be a number.
+
 - Symbols cannot be a single period (`.`).
 
 Quoted symbols are quoted using pipe characters `|` and escaping follows
@@ -177,7 +175,7 @@ the same rules as for strings.
 
 ### Lists
 
-Lists begin with a `(` character and end with a `)` character.
+Lists begin with a `(` character and end with a `)` character. Elements are separated using whitespace.
 
 ## Small Example
 
@@ -224,14 +222,9 @@ It is a list with an even number of values in it. This can be thought of as the
 and the values at the odd-numbered spots are the "values. Keep in mind, it is
 still a list. Multiple keys can be present in the plist, since it's just a
 list. What you do with that is up to you. Since order matters, you might
-implement a "first wins" parser, for example, where objects later in the plist
+implement a "first wins" parser, for example, where objects earlier in the plist
 take precedence, or you might simply implement a multimap and encode its
 contents with a plist.
-
-Plists can still be treated like lists in APIs if that is what is desired.
-They're just another type of list. They are present in the language because
-that allows untyped languages to suck in plists as dictionaries if they
-want to, which provides a lot of flexibility.
 
 There are several advantages to plists over unordered maps (in a serialization
 format, at least):
@@ -240,8 +233,9 @@ format, at least):
     `jsonrpc` version key is the first key to appear and that the
     `method` key was right after it, followed by the `params` key.
     All of a sudden, JSON RPC would be much easier to support in typed
-    languages, because incremental parsing is possible, making polymorphism
-    much easier without requiring reflection or untyped/type-erasure parsing.
+    languages. Because incremental parsing is possible, polymorphism
+    is made much easier without requiring reflection or untyped/type-erasure
+    parsing.
   - They don't require their "keys" to be hashable or even orderable,
     since it is just a list. Keys can be anything.
   - They don't require their key/value pairs to appear only once. When
@@ -251,6 +245,8 @@ format, at least):
 ## What Might APIs look like
 
 ### Typed languages
+
+#### C
 
 An incremental parser something like:
 
@@ -273,15 +269,6 @@ scan(&stream, scanstr, ...) // Scanf-like experience to extract values from the
 
 I could add these arguments to the scan function:
 
-"%d_1 %d_1 %d_1 %d_2" or whatever
-The number at the end would signify that that thing is part of a struct
-I pass the struct in as another argument between args for 1 2 and 3 but before
-4
-I pass in the struct, followed by its size
-so
-
-`scan(stream,scan,&bufstruct)` could add these arguments to the scan function:
-
 `"_ [ %d %d %d ] [ %d %d ] ` or whatever
 The brackets would signify that that everything inside is part of a struct
 I pass the struct in as another argument between args for 1 2 and 3 but before
@@ -296,7 +283,9 @@ When the list runs out, the loop is jumped out of that is running the scan.
 
 Scan-f could be super good here.
 
-The above function could consume two lists of structs using `memcpy()`.
+The above function could consume a list of structs using `memcpy()`.
+
+#### Golang
 
 Notably, in golang, nothing will change. DAN will be supported just as well
 as YAML or JSON is because of the nature and shape of their
@@ -333,4 +322,6 @@ vectors -- everything is just a list -- the program must know the schema
 before hand and declare it. This is safer anyway. The right API will
 make this easy, regardless of the language. The upside is that since
 everything has order, typed languages have a much easier time since
-incremental parsing is possible.
+incremental parsing is possible. Another huge upside, since everything
+is a list, is that parsing and ingestion of enormous documents is well
+supported.
