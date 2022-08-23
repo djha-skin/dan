@@ -8,6 +8,7 @@ A data notation with the bare essentials. ABNF in the repo in the file [dan.abnf
 - Support API communication a la JSON
 - Support config files and document embedding a la YAML
 - Support symbols and keywords in lisps a la EDN
+- Support tables a la [MTN](https://GitHub.com/djhaskin987/mtn)
 - Support incremental parsing better
 - Support typed languages better
 - Support better schema checking. It doesn't support it better than JSON,
@@ -325,3 +326,23 @@ everything has order, typed languages have a much easier time since
 incremental parsing is possible. Another huge upside, since everything
 is a list, is that parsing and ingestion of enormous documents is well
 supported.
+
+## What about tables?
+
+Consider the following example document of tables:
+
+```
+(
+    tabledoc "v1.0"
+    tables (
+        columns 3
+        data (
+           email name     age
+           "a@b" "billy"  15
+           "x@y" "tay"    23
+       )
+   )
+)
+```
+
+    
