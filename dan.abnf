@@ -2,7 +2,7 @@ dan-doc = *comment dan-value *comment
 
 dan-value   = null
             / bool
-            / number
+            / numeric
             / string
             / symbol
             / list
@@ -14,18 +14,23 @@ null = %23.6E                           ; "#n"
 false = %x23.66                         ; "#f"
 true = %x23.74                          ; "#t"
 
+
 bool = false
      / true
 
 digits1to9 = %31-%39                    ; 1-9
 digits = %x30-39                        ; 0-9
-exp = %45 / %65                         ; E or e
-top = %54 / %74                         ; T or t
-dot = %2E                               ; .
+exp = %x45 / %x65                       ; E or e
+dot = %x2E                              ; .
 sign = %x2B                             ; +
      / %x2D                             ; -
 integer = [ sign ] (zero / digits1to9 *digits)
-number = integer [ dot *digits ] [ exp ( integer / top ) ]
+inf = [ sign ] %x31.2F.30               ; [+-]1/0
+nan = [ sign ] %x30.2F.30               ; [+-]0/0
+number = integer [ dot *digits ] [ exp integer ]
+numeric = inf
+        / nan
+        / number
 
 ; String
 hexa = %x41 / %x61
@@ -105,10 +110,10 @@ symbol = identifier
 
 ; list
 list-sep   = 1*whitespace
-list-start = %x28 ; (
-list-end = %x29 ; )
-list = list-start [ list-sep ] *( dan-value
-                                *(list-sep dan-value) ) *1list-sep list-end
+list-start = %x5B ; [
+list-end = %x5D ; ]
+list = nlist-start [ list-sep ] *( dan-value
+                                *(list-sep dan-value) ) [ list-sep ] nlist-end
 ;; base language
 blankspace = %x09 / %x32
 line-delimiter = %0A         ; \n

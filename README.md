@@ -36,25 +36,10 @@ These are written `#t` for true and `#f` for false.
 These are written just as JSON numbers, with the addition of the `T` or `t`
 characters as stand-ins for the exponent:
 
-`[-+](0|[1-9][0-9]*)(.[0-9]+)?([eE]([0-9]+|[tT]))?`
+`[-+](1/0|0/0|(0|[1-9][0-9]*)(.[0-9]+)?([eE][0-9]+)?)`
 
-The `"t"` means `"top"` and means that all the exponent bits in the number
-are set to 1. This allows the language to represent IEEE 754
-infinity and NaN values. NaN has its exponent set to `t` and is non-zero,
-while infinities have all zeroes set for the integer and radix and the exponent
-set to `t`. Thus, the canonical way to write the following in DAN is:
-
-| Value             | Canonical Representation |
-|-------------------|--------------------------|
-| Positive Infinity | `0et`                    |
-| Negative Infinity | `-0et`                   |
-| Not a Number      | `1et`                    |
-
-Note the positive sign is implied (though specifying it is still valid).
-
-The above representations of the values should be used when generating DAN.
-
-All "Not a Number" values are considered to be equivalent.
+Where `1/0` means "Inifinity", `0/0` means "Not a Number", and otherwise it's
+a normal number.
 
 ## Strings
 
