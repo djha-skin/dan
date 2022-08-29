@@ -110,8 +110,8 @@ symbol = identifier
 
 ; list
 list-sep   = 1*whitespace
-list-start = %x5B ; [
-list-end = %x5D ; ]
+list-start = %x28 ; (
+list-end = %x29 ; )
 list = nlist-start [ list-sep ] *( dan-value
                                 *(list-sep dan-value) ) [ list-sep ] nlist-end
 ;; base language
